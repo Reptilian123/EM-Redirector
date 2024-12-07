@@ -112,7 +112,7 @@
         <div class="top-bar">
             <div class="left-content">
                 <h3 id="dateandtime">06 Desember 2024 00:00:00</h3>
-                <p id="battery">Baterai: 50%</p>
+                <p id="battery">Baterai: -%</p>
 
             </div>
             <div class="right-content" onclick="showUrlInput()">⋮</div>
@@ -224,7 +224,7 @@
             let timerInterval = setInterval(updateTimer, 1000);
         </script>
 
-        <script>
+        <script>/*
             // Define the start and end values for the randomness
             var startValue = 50;
             var endValue = 95;
@@ -234,6 +234,34 @@
 
             // Update the battery status text
             document.getElementById('battery').innerText = 'Baterai: ' + randomBatteryLevel + '%';
+        */</script>
+
+        <script>
+            // Check if the Battery Status API is supported
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(function(battery) {
+                    // Get the battery level as a percentage
+                    var batteryPercentage = Math.round(battery.level * 100);
+
+                    // Update the battery status text
+                    document.getElementById('battery').innerText = 'Baterai: ' + batteryPercentage + '%';
+
+                    // Optional: Add a listener to update the value when it changes
+                    battery.addEventListener('levelchange', function() {
+                        var updatedPercentage = Math.round(battery.level * 100);
+                        document.getElementById('battery').innerText = 'Baterai: ' + updatedPercentage + '%';
+                    });
+                });
+            } else {
+                var startValue = 50;
+                var endValue = 95;
+
+                // Generate a random number between startValue and endValue
+                var randomBatteryLevel = Math.floor(Math.random() * (endValue - startValue + 1)) + startValue;
+
+                // Update the battery status text
+                document.getElementById('battery').innerText = 'Baterai: ' + randomBatteryLevel + '%';
+            }
         </script>
 
     </body>
