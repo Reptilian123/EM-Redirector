@@ -57,7 +57,7 @@
             .green-bar-content {
                 color: white;
                 font-size: 16px;
-                margin-left: 20px; /* Align content to the far left */
+                margin-left: 2px; /* Align content to the far left */
             }
 
             .iframe-container {
@@ -111,7 +111,7 @@
     <body>
         <div class="top-bar">
             <div class="left-content">
-                <h3 id="dateandtime">06 Desember 2024 00:00:00</h3>
+                <h3 id="dateandtime">2024-12-09 00:00:00</h3>
                 <p id="battery">Baterai: -%</p>
 
             </div>
@@ -162,7 +162,7 @@
             }
         </script>
 
-        <script>
+        <script>/*
             function updateDateTime() {
             const element = document.getElementById('dateandtime');
             const now = new Date();
@@ -193,9 +193,31 @@
 
             // Set interval to update every second
             setInterval(updateDateTime, 1000);
-        </script>
+        */</script>
 
         <script>
+            function updateDateTime() {
+                const dateElement = document.getElementById("dateandtime");
+                const now = new Date();
+
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                dateElement.textContent = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            }
+
+            // Update the date and time every second
+            setInterval(updateDateTime, 1000);
+
+            // Initial call to display the current time immediately
+            updateDateTime();
+        </script>
+
+        <script>/*
             // Set initial time
             let timeLeft = 90 * 60; // 1 hour 30 minutes in seconds
 
@@ -215,13 +237,53 @@
                 if (timeLeft > 0) {
                     timeLeft--;
                 } else {
-                    clearInterval(timerInterval); // Stop the countdown when it reaches 0
-                    alert('Time is up!');
+                    timeLeft = 90 * 60;
                 }
             }
 
             // Update the timer every 1 second
             let timerInterval = setInterval(updateTimer, 1000);
+        */</script>
+
+        <script>
+            // Set initial time
+            let timeLeft = 90 * 60; // 1 hour 30 minutes in seconds
+
+            // Function to update the timer every second
+            function updateTimer() {
+                let hours = Math.floor(timeLeft / 3600); // Calculate hours
+                let minutes = Math.floor((timeLeft % 3600) / 60); // Calculate minutes
+                let seconds = timeLeft % 60; // Calculate seconds
+
+                // Format the time as "1 jam 30 menit 0 detik"
+                document.getElementById('timer').textContent = 
+                    `${hours} jam ${minutes} menit ${seconds} detik`;
+
+                // Decrement the time by 1 second
+                if (timeLeft > 0) {
+                    timeLeft--;
+                } else {
+                    timeLeft = 90 * 60; // Stop the timer when it reaches 0
+                }
+            }
+
+            // Update the timer every 1 second
+            let timerInterval = setInterval(updateTimer, 1000);
+
+            // Initialize the timer display immediately
+            updateTimer();
+
+
+        const leftContent = document.querySelector('.left-content');
+        const timeValues = [90 * 60, 60 * 60, 30 * 60, 10 * 60, 5 * 60]; // Array of values
+        let currentIndex = 0; // Track current index
+
+        leftContent.addEventListener('click', () => {
+            // Cycle to the next value
+            currentIndex = (currentIndex + 1) % timeValues.length; // Loop back to the start
+            timeLeft = timeValues[currentIndex];
+            console.log(`timeLeft set to: ${timeLeft} seconds`);
+        });
         </script>
 
         <script>/*
@@ -276,5 +338,16 @@
             }
         </script>
 
+        <script>
+            // JavaScript code to cycle colors
+            const div = document.querySelector('.green-bar');
+            const colors = ['#259226', '#e3dc00', '#d00c0c'];
+            let currentColorIndex = 0;
+
+            div.addEventListener('click', () => {
+                currentColorIndex = (currentColorIndex + 1) % colors.length;
+                div.style.backgroundColor = colors[currentColorIndex];
+            });
+        </script>
     </body>
 </html>
